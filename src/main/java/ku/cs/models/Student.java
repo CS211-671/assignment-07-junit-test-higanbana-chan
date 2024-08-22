@@ -29,9 +29,18 @@ public class Student {
         }
     }
 
-    public String grade()
-    {
-        return "F";
+    public String grade() {
+        if (score >= 80) {
+            return "A";
+        } else if (score >= 70) {
+            return "B";
+        } else if (score >= 60) {
+            return "C";
+        } else if (score >= 50) {
+            return "D";
+        } else {
+            return "F";
+        }
     }
 
     public boolean isId(String id) {
@@ -57,5 +66,13 @@ public class Student {
                 ", name: '" + name + '\'' +
                 ", score: " + score +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return id.equals(student.id);
     }
 }

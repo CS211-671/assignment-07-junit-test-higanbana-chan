@@ -27,6 +27,7 @@ public class User {
 
     public boolean validatePassword(String password) {
         // more info: https://github.com/patrickfav/bcrypt
+        // BCrypt ใช้เข้ารหัสได้อย่างเดียว
         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), this.password);
         return result.verified;
     }
