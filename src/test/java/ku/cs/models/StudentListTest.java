@@ -44,6 +44,9 @@ class StudentListTest {
 
     @Test
     void testViewGradeOfId() {
-
+        studentList.addNewStudent("6100000", "a", 50);
+        assertEquals(studentList.viewGradeOfId("6100000"), "D");
+        studentList.giveScoreToId("6100000", 20);
+        assertEquals(studentList.viewGradeOfId("6100000"), "B");
     }
 }

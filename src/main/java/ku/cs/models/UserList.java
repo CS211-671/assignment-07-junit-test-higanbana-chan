@@ -1,5 +1,7 @@
 package ku.cs.models;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.util.ArrayList;
 
 public class UserList {
@@ -21,18 +23,19 @@ public class UserList {
     public void addUser(String username, String password) {
         User exist = findUserByUsername(username);
         if (exist == null) {
-            users.add(new User(username, password));
+            // Encrypt the password before storing
+            String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+            users.add(new User(username, hashedPassword));
         }
     }
 
     // TODO: implements this method to change user's password to newPassword by verified oldPassword
     // TODO: return true if process is completed, otherwise return false
     public boolean changePassword(String username, String oldPassword, String newPassword) {
-        if (users.contains(findUserByUsername(username))) {
-            if (oldPassword.equals(findUserByUsername(username).getPassword())) {
-                findUserByUsername(username).setPassword(newPassword);
-                return true;
-            }
+        User user = findUserByUsername(username);
+        if (user.validatePassword(oldPassword)) {
+            user.setPassword(newPassword);
+            return true;
         }
         return false;
     }
@@ -40,10 +43,10 @@ public class UserList {
     // TODO: implements this method to find user in users with valid password
     // TODO: return User object if username and password is correct, otherwise return null
     public User login(String username, String password) {
-        if (users.contains(findUserByUsername(username))) {
-            if (password.equals(findUserByUsername(username).getPassword())) {
-                return users.get(0);
-            }
+        User user = findUserByUsername(username);
+        if (user.validatePassword(password)) {
+            System.out.println(user.getUsername());
+            return user;
         }
         return null;
     }
